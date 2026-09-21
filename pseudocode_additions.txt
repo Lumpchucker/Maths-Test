@@ -1,0 +1,16 @@
+def "ask_difficulty_extended"
+    tell the user the difficulty options, accepting both integers and strings
+    
+        prompt the user to select a difficulty, saving input as "response"
+
+        set "response" to lowercase
+
+        if "response" is either equal to 1, e or easy then
+            set "lives" to 3, "max_num" to 10 and "questions" to 5
+        if "response" is either equal to 2, m or medium then
+            set "lives" to 2, "max_num" to 25 and "questions" to 10
+        if "response" is either equal to 3, h or hard then
+            set "lives" to 1, "max_num" to 50 and "questions" to 15
+        else
+            tell the user the input was invalid and re-prompt
+    while prompt is invalid keep looping

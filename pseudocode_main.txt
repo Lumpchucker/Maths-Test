@@ -1,0 +1,71 @@
+def "ask_question" taking "minimum" and "maximum" integer variables
+    generate two random numbers between "minimum" and "maximum", saving as "num1" and "num2" respectively
+
+    randomly generate a 0 or 1, if 0 set "operation" to '+' and if 1 set "operation" to '-'
+
+    if "operation" equals + then
+        add "num1" and "num2" and save as "answer"
+    else
+        minus "num2" from "num1" and save as "answer"
+    
+    tell the user what calculation just occurred
+
+    ask user to guess and save as "guess"
+    if "guess" equals "answer" then
+        tell the user they were correct
+        return True
+    else
+        tell the user they were incorrect and what the answer was
+        return False
+
+
+def "main" taking no values
+    welcome the user
+
+    do loop
+        prompt the user to select a difficulty, accepting 1, 2 or 3
+
+        if 1 easy difficulty has been selected then
+            set "lives" to 3, "max_num" to 10 and "questions" to 5
+        if 2 medium difficulty has been selected then
+            set "lives" to 2, "max_num" to 25 and "questions" to 10
+        if 3 hard difficulty has been selected then
+            set "lives" to 1, "max_num" to 50 and "questions" to 15
+        else
+            tell the user the input was invalid and re-prompt
+    while prompt is invalid keep looping
+    
+    set "score" to 0
+
+    loop for "questions" times, saving current round as "turn"
+        tell the user what "turn" out of the total "questions" they are on
+        on the same line tell the user the amount of lives remaining, format lives to life when only 1 "lives" left
+
+        if not the final question then 
+            call "ask_question" passing 1 and "max_num", saving the result as "result"
+
+        if final question then
+            tell the user "Challenge question!"
+            call "ask_question" passing "max_num" and "max_num" * 2, asving the result as "result"
+
+        if "result" is True increment "score" by 1
+    
+    calculate "percentage" of "score" out of "questions" rounding to the nearest whole number
+
+    tell the user the test is complete
+    tell the user their "score" out of "questions" followed by the "percentage"
+
+    if "percentage" is less than 50% then
+        tell the user they got a 'Fail' grade
+    if "percentage" is greater than 49% and less than 60% then
+        tell the user they got a 'Pass' grade
+    if "percentage" is greater than 59% and less than 69% then 
+        tell the user they got a 'Credit' grade
+    if "percentage" is greater than 69% and less than 79% then
+        tell the user they got a 'Distinction' grade
+    if "percentage" is greater than 79% and less than 101% then
+        tell the user they got a 'High Distinction' grade
+    else
+        tell the user an error occurred with the "percentage" calculation
+    
+    exit program
