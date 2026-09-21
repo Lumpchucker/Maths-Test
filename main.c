@@ -1,31 +1,39 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
 // Minimum size of 2 as the string still needs to have a null terminator to be valid
 #define BUFFER_SIZE 10
 
-// Clears the buffer, should be used after any user input
-void clear_stdin_buffer() {
-    // Flushes stdin buffer by consuming characters
-    // getchar gets a single char from the buffer, continues until a \n or EOF is found
-    int f;
-    while((f = getchar()) != '\n' && f != EOF);
-}
-
-// Ask if int should be used as a standin for bool or if <stdbool.h> should be used instead
-int ask_question (int minimum, int maximum) {
-    char results[BUFFER_SIZE];
-    printf("Enter a number: ");
-    if (fgets(results, BUFFER_SIZE, stdin) != NULL) {
-        results[strcspn(results, "\n")] = 0;
-        clear_stdin_buffer();
-        printf("results: %s\n", results);
-        return ((results[0] != '1') ? 0 : 1);   
-    }
-    else {
+int user_input(char *response) {
+    //char response[BUFFER_SIZE];
+    if (fgets(response, BUFFER_SIZE, stdin) == NULL) {
         printf("Error reading user input!\n");
         return -1;
     }
+    // Check if there is a \n in the array, replace it with a null terminator if found as it means the response is less than or equal to the buffer size
+    if (strchr(response, '\n') != NULL) {
+        response[strcspn(response, "\n")] = '/0';
+    } else { // If no \n found then the input was larger than the BUFFER_SIZE so clear the buffer
+        int f;
+        while((f = getchar()) != '\n' && f != EOF);
+    }
+    return 1;
+}
+
+int ask_question (int minimum, int maximum) {
+    srand(time(NULL));
+    char operator = (rand() % 2 == 0) ? '+' : '-';
+    int first_num = rand() % (maximum - minimum + 1) + minimum;
+    int second_num = rand() % (maximum - minimum + 1) + minimum;
+    char results[BUFFER_SIZE];
+    printf("Enter a number: ");
+    if (user_input(results) == -1) {
+        printf("Error reading user input!\n");
+        return -1;
+    }
+
 }
 
 int main(void) {
@@ -39,12 +47,7 @@ int main(void) {
     while (1) {
         // Get user response and only save the first character (second character is replace with \0)
         printf("> ");
-        if (fgets(difficulty, BUFFER_SIZE, stdin) == NULL) {
-            printf("Error reading user input!\n");
-            return 1;
-        }
-        difficulty[strcspn(difficulty, "\n")] = 0;
-        clear_stdin_buffer();
+        if (user_input(difficulty) == -1);
 
         // Easy difficulty
         if (strcmp("1", difficulty) == 0) {
